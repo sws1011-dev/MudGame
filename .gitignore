@@ -1,0 +1,44 @@
+# --- 컴파일 결과물 및 빌드 폴더 ---
+*.exe
+*.out
+*.app
+*.o
+*.obj
+bin/
+build/
+debug/
+release/
+x64/
+x86/
+
+# --- Visual Studio 관련 ---
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.pdb
+*.ilk
+*.aps
+*.ncb
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+
+# --- VS Code 관련 ---
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# --- OS 및 기타 ---
+.DS_Store
+Thumbs.db
+*.log
+
+.idea/
+*.sln
+*.vcxproj
+*.filters
+*.user
