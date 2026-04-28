@@ -3,7 +3,9 @@
 #include <iomanip>
 #include <conio.h>
 
+#include "Monster.h"
 #include "Player.h"
+#include "World.h"
 
 using namespace std;
 
@@ -13,26 +15,26 @@ int main()
     cout << "플레이어 이름을 입력하세요 : ";
     cin >> name;
 
-    Player p(name);
+    unique_ptr<Player> player = make_unique<Player>(name);
 
     while (true)
     {
         system("cls");
         int answer;
         cout << "==================================================" << endl;
-        cout << " [ " << p.get_name() << " 의 상태 ]" << endl;
+        cout << " [ " << player->get_name() << " 의 상태 ]" << endl;
         cout << "--------------------------------------------------" << endl;
-        cout << "  HP  (생명력) : " << setw(3) << p.get_hp() << " / " << p.get_max_hp() << endl;
-        cout << "  ATK (공격력) : " << setw(3) << p.get_atk() << "  |  DEF (방어력) : " << setw(3) << p.get_def() << endl;
-        cout << "  SPD (속도)   : " << setw(3) << p.get_spd() << "  |  CRI (치명타) : " << setw(3) << p.get_cri() << "%" <<
+        cout << "  HP  (생명력) : " << setw(3) << player->get_hp() << " / " << player->get_max_hp() << endl;
+        cout << "  ATK (공격력) : " << setw(3) << player->get_atk() << "  |  DEF (방어력) : " << setw(3) << player->get_def() << endl;
+        cout << "  SPD (속도)   : " << setw(3) << player->get_spd() << "  |  CRI (치명타) : " << setw(3) << player->get_cri() << "%" <<
             endl;
-        cout << "  HIT (명중률) : " << setw(3) << p.get_hit() << "% |  EVA (회피율) : " << setw(3) << p.get_eva() << "%" <<
+        cout << "  HIT (명중률) : " << setw(3) << player->get_hit() << "% |  EVA (회피율) : " << setw(3) << player->get_eva() << "%" <<
             endl;
         cout << "--------------------------------------------------" << endl;
         cout << "  보유 재화 : " << 1 << " G" << endl;
         cout << "==================================================" << endl;
         cout << "[ 메인 메뉴 ]" << endl;
-        cout << "  1. 보스 도전          2. 트레이닝" << endl;
+        cout << "  1. 모험 하기         2. 트레이닝" << endl;
         cout << "  3. 돈 벌기          0. 게임 종료" << endl;
         cout << "--------------------------------------------------" << endl;
         cout << "  선택 : ";
@@ -40,24 +42,54 @@ int main()
 
         if (answer == 1)
         {
-            system("cls");
-            cout << "==================================================" << endl;
-            cout << "             [ 보스 토벌대 - 타겟 선택 ]             " << endl;
-            cout << "==================================================" << endl;
-            cout << "  현재 스탯 -> ATK: " << 1 << " | HIT: " << 2 << " | SPD: " << 4 << endl;
-            cout << "--------------------------------------------------" << endl;
-            cout << "  1. [급] 슬라임 킹 (체력 특화) " << endl;
-            cout << "     - 설명: 엄청난 맷집을 가졌지만 매우 느립니다." << endl;
-            cout << endl;
-            cout << "  2. [중] 그림자 암살자 (회피 특화)" << endl;
-            cout << "     - 설명: 공격이 거의 맞지 않습니다. 명중률이 필수입니다." << endl;
-            cout << endl;
-            cout << "  3. [고] 붉은 뇌전 (속도 특화)" << endl;
-            cout << "     - 설명: 당신이 숨 쉬기도 전에 먼저 공격합니다." << endl;
-            cout << "--------------------------------------------------" << endl;
-            cout << "  0. 마을로 돌아가기" << endl;
-            cout << "==================================================" << endl;
-            cout << "  도전할 보스 번호: ";
+            while (answer != 0)
+            {
+                system("cls");
+                cout << "==================================================" << endl;
+                cout << "             [ 월드 선택 : 새로운 모험 ]             " << endl;
+                cout << "==================================================" << endl;
+                cout << "  1. [말랑말랑 푸딩 섬] " << endl;
+                cout << "  2. [바람의 협곡] " << endl;
+                cout << "  3. [황금의 신전] " << endl;
+                cout << "  4. [고속의 차원] " << endl;
+                cout << "  5. [강철의 요새] " << endl;
+                cout << "--------------------------------------------------" << endl;
+                cout << "  0. 마을로 돌아가기" << endl;
+                cout << "==================================================" << endl;
+                cout << "  입장할 월드 번호: ";
+
+                cin >> answer;
+
+                unique_ptr<World> world;
+                if (answer == 1)
+                {
+                    world = make_unique<World>("말랑말랑 푸딩 섬");
+                }
+                else if (answer == 2)
+                {
+                    world = make_unique<World>("바람의 협곡");
+                }
+                else if (answer == 3)
+                {
+                    world = make_unique<World>("황금의 신전");
+                }
+                else if (answer == 4)
+                {
+                    world = make_unique<World>("고속의 차원");
+                }
+                else if (answer == 5)
+                {
+                    world = make_unique<World>("강철의 요새");
+                }else if (answer == 0)
+                {
+                    break;
+                }else
+                {
+                    continue;
+                }
+                
+                world->world_start(*player);
+            }
         }
         else if (answer == 2)
         {
@@ -70,11 +102,8 @@ int main()
                 cout << "  현재 보유 골드: " << 0 << " G" << endl;
                 cout << "--------------------------------------------------" << endl;
                 cout << "  1. 피지컬 훈련 - 효과: HP(생명력) 및 DEF(방어력) 증가" << endl;
-                cout << endl;
                 cout << "  2. 전술 훈련 - 효과: ATK(공격력) 및 CRI(치명타) 증가" << endl;
-                cout << endl;
                 cout << "  3. 감각 훈련 - 효과: HIT(명중률) 및 EVA(회피율) 증가" << endl;
-                cout << endl;
                 cout << "  4. 돌발 훈련 - 효과: SPD(속도) 및 CRI(치명타) 증가" << endl;
                 cout << "--------------------------------------------------" << endl;
                 cout << "  0. 돌아가기" << endl;

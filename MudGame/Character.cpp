@@ -6,7 +6,7 @@ Character::Character(string name, int hp, int atk, int def, int spd, int cri, in
     maxHp = hp;
 }
 
-void Character::setHp(int atk)
+void Character::setHp(int newHp)
 {
-    hp -= (def-atk);
+    hp = newHp;
 }
